@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import dayjs from "dayjs";
+import Button from "@mui/material/Button";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -24,6 +25,19 @@ function Traininglist() {
         setTrainings(formattedTrainings);
       })
       .catch((err) => console.error(err));
+  };
+
+  const deleteTraining = (id) => {
+    if (window.confirm("Are you sure?")) {
+      fetch(`https://traineeapp.azurewebsites.net/api/trainings/${id}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) fetchTrainings();
+          else throw new Error("Error in DELETE: " + response.statusText);
+        })
+        .catch((err) => console.error(err));
+    }
   };
 
   useEffect(() => {
@@ -54,6 +68,14 @@ function Traininglist() {
       sortable: true,
       filter: true,
       headerName: "Last Name",
+    },
+    {
+      cellRenderer: (params) => (
+        <Button size="small" onClick={() => deleteTraining(params.data.id)}>
+          Delete
+        </Button>
+      ),
+      width: 120,
     },
   ];
 
