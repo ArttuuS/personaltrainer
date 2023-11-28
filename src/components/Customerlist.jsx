@@ -6,6 +6,8 @@ import "ag-grid-community/styles/ag-theme-material.css";
 
 function Customerlist() {
   const [customers, setCustomers] = useState([]);
+  const [gridApi, setGridApi] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchCustomers = () => {
     fetch("http://traineeapp.azurewebsites.net/api/customers")
@@ -21,6 +23,15 @@ function Customerlist() {
     fetchCustomers();
   }, []);
 
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
+
+  const onSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
+    gridApi.setQuickFilter(event.target.value);
+  };
+
   const [columnDefs] = useState([
     { field: "firstname", sortable: true, filter: true },
     { field: "lastname", sortable: true, filter: true },
@@ -33,12 +44,21 @@ function Customerlist() {
 
   return (
     <>
+      <div style={{ margin: "20px" }}>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={onSearchTermChange}
+        />
+      </div>
       <div className="ag-theme-material" style={{ width: "100%", height: 800 }}>
         <AgGridReact
           rowData={customers}
           columnDefs={columnDefs}
           pagination={true}
           paginationAutoPageSize={true}
+          onGridReady={onGridReady}
         />
       </div>
     </>
