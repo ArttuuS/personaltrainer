@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
+import AddTraining from "./AddTraining";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -89,6 +90,7 @@ function Traininglist() {
           onChange={onSearchTermChange}
         />
       </div>
+      <AddTraining fetchTrainings={fetchTrainings} />
       <div className="ag-theme-material" style={{ width: "100%", height: 800 }}>
         <AgGridReact
           rowData={trainings}
