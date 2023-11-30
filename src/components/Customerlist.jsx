@@ -12,7 +12,6 @@ function Customerlist() {
   const [customers, setCustomers] = useState([]);
   const [gridApi, setGridApi] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [customerUrl, setCustomerUrl] = useState(null);
 
   const fetchCustomers = () => {
     fetch("http://traineeapp.azurewebsites.net/api/customers")
