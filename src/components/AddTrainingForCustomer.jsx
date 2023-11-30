@@ -9,12 +9,12 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-function AddTrainingForCustomer({ customerUrl, onClick }) {
+function AddTrainingForCustomer({ customerUrl }) {
   const [training, setTraining] = useState({
     activity: "",
     date: "",
     duration: "",
-    customer: customerUrl || "",
+    customer: customerUrl,
   });
 
   const [open, setOpen] = useState(false);
@@ -28,7 +28,6 @@ function AddTrainingForCustomer({ customerUrl, onClick }) {
   };
 
   const saveTraining = () => {
-    // Set the customer value directly in the saveTraining function
     training.customer = customerUrl;
 
     fetch("https://traineeapp.azurewebsites.net/api/trainings", {
@@ -44,10 +43,6 @@ function AddTrainingForCustomer({ customerUrl, onClick }) {
 
     handleClose();
   };
-
-  useEffect(() => {
-    onClick();
-  }, [onClick]);
 
   return (
     <div>

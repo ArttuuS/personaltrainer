@@ -35,10 +35,6 @@ function Customerlist() {
     }
   };
 
-  const sendCustomerInfo = (url) => {
-    setCustomerUrl(url);
-  };
-
   useEffect(() => {
     fetchCustomers();
   }, []);
@@ -79,12 +75,7 @@ function Customerlist() {
     },
     {
       cellRenderer: (params) => (
-        <AddTrainingForCustomer
-          onClick={() => {
-            sendCustomerInfo(params.data.links[0].href);
-          }}
-          customerUrl={customerUrl}
-        />
+        <AddTrainingForCustomer customerUrl={params.data.links[0].href} />
       ),
       width: 120,
     },
