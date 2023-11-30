@@ -8,32 +8,16 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import MenuItem from "@mui/material/MenuItem";
 
-export default function AddTraining({ fetchTrainings }) {
+function AddTrainingForCustomer({ customerUrl, isOpen, onClose }) {
   const [training, setTraining] = useState({
     activity: "",
     date: "",
     duration: "",
-    customer: "",
+    customer: customerUrl || "",
   });
 
-  const [customers, setCustomers] = useState([]);
   const [open, setOpen] = useState(false);
-
-  const fetchCustomers = () => {
-    fetch("http://traineeapp.azurewebsites.net/api/customers")
-      .then((response) => {
-        if (response.ok) return response.json();
-        else throw new Error("Error in fetch" + response.statusText);
-      })
-      .then((data) => setCustomers(data.content))
-      .catch((err) => console.error(err));
-  };
-
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,9 +25,13 @@ export default function AddTraining({ fetchTrainings }) {
 
   const handleClose = () => {
     setOpen(false);
+    onClose();
   };
 
   const saveTraining = () => {
+    // Set the customer value directly in the saveTraining function
+    training.customer = customerUrl;
+
     fetch("https://traineeapp.azurewebsites.net/api/trainings", {
       method: "POST",
       headers: { "Content-type": "application/json" },
@@ -52,8 +40,6 @@ export default function AddTraining({ fetchTrainings }) {
       .then((response) => {
         if (!response.ok)
           throw new Error("Error when adding training: " + response.statusText);
-
-        fetchTrainings();
       })
       .catch((err) => console.error(err));
 
@@ -62,10 +48,7 @@ export default function AddTraining({ fetchTrainings }) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add Training
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={isOpen} onClose={handleClose}>
         <DialogTitle>New Training</DialogTitle>
         <DialogContent>
           <TextField
@@ -96,26 +79,6 @@ export default function AddTraining({ fetchTrainings }) {
               setTraining({ ...training, duration: e.target.value })
             }
           />
-          <TextField
-            select
-            margin="dense"
-            label="Customer"
-            fullWidth
-            variant="standard"
-            value={training.customer}
-            onChange={(e) =>
-              setTraining({ ...training, customer: e.target.value })
-            }
-          >
-            {customers.map((customer, index) => (
-              <MenuItem
-                key={`${customer.id}-${index}`}
-                value={customer.links[0].href}
-              >
-                {customer.firstname} {customer.lastname}
-              </MenuItem>
-            ))}
-          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -125,3 +88,5 @@ export default function AddTraining({ fetchTrainings }) {
     </div>
   );
 }
+
+export default AddTrainingForCustomer;

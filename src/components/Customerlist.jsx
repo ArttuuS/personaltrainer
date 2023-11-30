@@ -3,6 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import Button from "@mui/material/Button";
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
+import AddTrainingForCustomer from "./AddTrainingForCustomer";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -11,6 +12,17 @@ function Customerlist() {
   const [customers, setCustomers] = useState([]);
   const [gridApi, setGridApi] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [customerUrl, setCustomerUrl] = useState(null);
+
+  const [isAddTrainingDialogOpen, setAddTrainingDialogOpen] = useState(false);
+
+  const openAddTrainingDialog = () => {
+    setAddTrainingDialogOpen(true);
+  };
+
+  const closeAddTrainingDialog = () => {
+    setAddTrainingDialogOpen(false);
+  };
 
   const fetchCustomers = () => {
     fetch("http://traineeapp.azurewebsites.net/api/customers")
@@ -31,6 +43,10 @@ function Customerlist() {
         })
         .catch((err) => console.error(err));
     }
+  };
+
+  const sendCustomerInfo = (url) => {
+    setCustomerUrl(url);
   };
 
   useEffect(() => {
@@ -71,6 +87,22 @@ function Customerlist() {
       ),
       width: 120,
     },
+    {
+      cellRenderer: (params) => (
+        <div>
+          <Button
+            size="small"
+            onClick={() => {
+              sendCustomerInfo(params.data.links[0].href);
+              openAddTrainingDialog();
+            }}
+          >
+            Add Training
+          </Button>
+        </div>
+      ),
+      width: 120,
+    },
   ]);
 
   return (
@@ -83,6 +115,11 @@ function Customerlist() {
           onChange={onSearchTermChange}
         />
       </div>
+      <AddTrainingForCustomer
+        customerUrl={customerUrl}
+        isOpen={isAddTrainingDialogOpen}
+        onClose={closeAddTrainingDialog}
+      />
       <AddCustomer fetchCustomers={fetchCustomers} />
       <div className="ag-theme-material" style={{ width: "100%", height: 800 }}>
         <AgGridReact
