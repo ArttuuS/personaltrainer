@@ -48,14 +48,15 @@ function Customerlist() {
   };
 
   const columnDefs = [
-    { field: "firstname", sortable: true, filter: true },
-    { field: "lastname", sortable: true, filter: true },
+    { field: "firstname", sortable: true, filter: true, width: 150 },
+    { field: "lastname", sortable: true, filter: true, width: 150 },
     { field: "streetaddress", sortable: true, filter: true },
-    { field: "postcode", sortable: true, filter: true },
-    { field: "city", sortable: true, filter: true },
+    { field: "postcode", sortable: true, filter: true, width: 120 },
+    { field: "city", sortable: true, filter: true, width: 120 },
     { field: "email", sortable: true, filter: true },
     { field: "phone", sortable: true, filter: true },
     {
+      headerName: "Actions",
       cellRenderer: (params) => (
         <EditCustomer fetchCustomers={fetchCustomers} data={params.data} />
       ),
@@ -76,7 +77,7 @@ function Customerlist() {
       cellRenderer: (params) => (
         <AddTrainingForCustomer customerUrl={params.data.links[0].href} />
       ),
-      width: 120,
+      width: 150,
     },
   ];
 

@@ -47,7 +47,7 @@ function AddTrainingForCustomer({ customerUrl }) {
   return (
     <div>
       <Button size="small" onClick={handleClickOpen}>
-        Add
+        Add Training
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Training</DialogTitle>
