@@ -14,16 +14,6 @@ function Customerlist() {
   const [searchTerm, setSearchTerm] = useState("");
   const [customerUrl, setCustomerUrl] = useState(null);
 
-  const [isAddTrainingDialogOpen, setAddTrainingDialogOpen] = useState(false);
-
-  const openAddTrainingDialog = () => {
-    setAddTrainingDialogOpen(true);
-  };
-
-  const closeAddTrainingDialog = () => {
-    setAddTrainingDialogOpen(false);
-  };
-
   const fetchCustomers = () => {
     fetch("http://traineeapp.azurewebsites.net/api/customers")
       .then((response) => {
@@ -62,7 +52,7 @@ function Customerlist() {
     gridApi.setQuickFilter(event.target.value);
   };
 
-  const [columnDefs] = useState([
+  const columnDefs = [
     { field: "firstname", sortable: true, filter: true },
     { field: "lastname", sortable: true, filter: true },
     { field: "streetaddress", sortable: true, filter: true },
@@ -89,21 +79,16 @@ function Customerlist() {
     },
     {
       cellRenderer: (params) => (
-        <div>
-          <Button
-            size="small"
-            onClick={() => {
-              sendCustomerInfo(params.data.links[0].href);
-              openAddTrainingDialog();
-            }}
-          >
-            Add Training
-          </Button>
-        </div>
+        <AddTrainingForCustomer
+          onClick={() => {
+            sendCustomerInfo(params.data.links[0].href);
+          }}
+          customerUrl={customerUrl}
+        />
       ),
       width: 120,
     },
-  ]);
+  ];
 
   return (
     <>
@@ -115,11 +100,7 @@ function Customerlist() {
           onChange={onSearchTermChange}
         />
       </div>
-      <AddTrainingForCustomer
-        customerUrl={customerUrl}
-        isOpen={isAddTrainingDialogOpen}
-        onClose={closeAddTrainingDialog}
-      />
+
       <AddCustomer fetchCustomers={fetchCustomers} />
       <div className="ag-theme-material" style={{ width: "100%", height: 800 }}>
         <AgGridReact

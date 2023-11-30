@@ -9,7 +9,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-function AddTrainingForCustomer({ customerUrl, isOpen, onClose }) {
+function AddTrainingForCustomer({ customerUrl, onClick }) {
   const [training, setTraining] = useState({
     activity: "",
     date: "",
@@ -25,7 +25,6 @@ function AddTrainingForCustomer({ customerUrl, isOpen, onClose }) {
 
   const handleClose = () => {
     setOpen(false);
-    onClose();
   };
 
   const saveTraining = () => {
@@ -46,9 +45,16 @@ function AddTrainingForCustomer({ customerUrl, isOpen, onClose }) {
     handleClose();
   };
 
+  useEffect(() => {
+    onClick();
+  }, [onClick]);
+
   return (
     <div>
-      <Dialog open={isOpen} onClose={handleClose}>
+      <Button size="small" onClick={handleClickOpen}>
+        Add
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Training</DialogTitle>
         <DialogContent>
           <TextField
