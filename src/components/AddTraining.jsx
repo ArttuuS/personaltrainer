@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import MenuItem from "@mui/material/MenuItem";
+import moment from "moment";
 
 export default function AddTraining({ fetchTrainings }) {
-  const [training, setTraining] = useState({
+  const [training, setTraining] = React.useState({
     activity: "",
-    date: "",
+    date: null,
+    time: null,
     duration: "",
     customer: "",
   });
 
-  const [customers, setCustomers] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [customers, setCustomers] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
 
   const fetchCustomers = () => {
     fetch("http://traineeapp.azurewebsites.net/api/customers")
@@ -31,7 +33,7 @@ export default function AddTraining({ fetchTrainings }) {
       .catch((err) => console.error(err));
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchCustomers();
   }, []);
 
@@ -44,10 +46,23 @@ export default function AddTraining({ fetchTrainings }) {
   };
 
   const saveTraining = () => {
+    const isoDate = moment(training.date).format("YYYY-MM-DD");
+
+    const isoTimeString = moment(training.time, "hh:mm A").format(
+      "HH:mm:ss.SSS"
+    );
+
+    const isoDateTimeWithTime = `${isoDate}T${isoTimeString}`;
+
+    const formattedTraining = {
+      ...training,
+      date: isoDateTimeWithTime,
+    };
+
     fetch("https://traineeapp.azurewebsites.net/api/trainings", {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify(training),
+      body: JSON.stringify(formattedTraining),
     })
       .then((response) => {
         if (!response.ok)
@@ -83,6 +98,12 @@ export default function AddTraining({ fetchTrainings }) {
               label="Date"
               value={training.date}
               onChange={(date) => setTraining({ ...training, date })}
+              textField={(props) => <TextField {...props} fullWidth />}
+            />
+            <TimePicker
+              label="Time"
+              value={training.time}
+              onChange={(time) => setTraining({ ...training, time })}
               textField={(props) => <TextField {...props} fullWidth />}
             />
           </LocalizationProvider>

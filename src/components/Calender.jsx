@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import dayjs from "dayjs";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
@@ -13,16 +12,20 @@ function TrainingCalendar() {
     fetch("http://traineeapp.azurewebsites.net/gettrainings")
       .then((response) => response.json())
       .then((data) => {
-        // Process the data and update the state
         const formattedTrainings = data.map((training) => {
+          const startDate = new Date(training.date);
+          const endDate = new Date(
+            startDate.getTime() + training.duration * 60000
+          );
+
           const title = `${training.activity} / ${training.customer.firstname} ${training.customer.lastname} `;
 
           return {
             id: training.id,
             title: title,
 
-            start: training.date.startDate,
-            end: training.date.endDate,
+            start: startDate,
+            end: endDate,
           };
         });
         setTrainings(formattedTrainings);

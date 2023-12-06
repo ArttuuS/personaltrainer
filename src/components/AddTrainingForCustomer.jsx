@@ -5,14 +5,16 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import moment from "moment";
 
 function AddTrainingForCustomer({ customerUrl }) {
   const [training, setTraining] = useState({
     activity: "",
-    date: "",
+    date: null,
+    time: null,
     duration: "",
     customer: customerUrl,
   });
@@ -30,10 +32,23 @@ function AddTrainingForCustomer({ customerUrl }) {
   const saveTraining = () => {
     training.customer = customerUrl;
 
+    const isoDate = moment(training.date).format("YYYY-MM-DD");
+
+    const isoTimeString = moment(training.time, "hh:mm A").format(
+      "HH:mm:ss.SSS"
+    );
+
+    const isoDateTimeWithTime = `${isoDate}T${isoTimeString}`;
+
+    const formattedTraining = {
+      ...training,
+      date: isoDateTimeWithTime,
+    };
+
     fetch("https://traineeapp.azurewebsites.net/api/trainings", {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify(training),
+      body: JSON.stringify(formattedTraining),
     })
       .then((response) => {
         if (!response.ok)
@@ -67,6 +82,12 @@ function AddTrainingForCustomer({ customerUrl }) {
               label="Date"
               value={training.date}
               onChange={(date) => setTraining({ ...training, date })}
+              textField={(props) => <TextField {...props} fullWidth />}
+            />
+            <TimePicker
+              label="Time"
+              value={training.time}
+              onChange={(time) => setTraining({ ...training, time })}
               textField={(props) => <TextField {...props} fullWidth />}
             />
           </LocalizationProvider>
