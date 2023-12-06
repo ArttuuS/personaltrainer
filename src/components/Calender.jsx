@@ -9,7 +9,7 @@ function TrainingCalendar() {
   const [trainings, setTrainings] = useState([]);
 
   useEffect(() => {
-    fetch("http://traineeapp.azurewebsites.net/gettrainings")
+    fetch("https://traineeapp.azurewebsites.net/gettrainings")
       .then((response) => response.json())
       .then((data) => {
         const formattedTrainings = data.map((training) => {

@@ -13,7 +13,7 @@ function Traininglist() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetchTrainings = () => {
-    fetch("http://traineeapp.azurewebsites.net/gettrainings")
+    fetch("https://traineeapp.azurewebsites.net/gettrainings")
       .then((response) => {
         if (response.ok) return response.json();
         else throw new Error("Error in fetch: " + response.statusText);
