@@ -31,8 +31,6 @@ export default function EditCustomer({ fetchCustomers, data }) {
       email: data.email,
       phone: data.phone,
     });
-
-    console.log(data);
   };
 
   const handleClose = () => {
