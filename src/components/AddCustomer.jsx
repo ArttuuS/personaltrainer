@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-export default function AddCustomer({ fetchCustomers }) {
+function AddCustomer({ fetchCustomers }) {
   const [customer, setCustomer] = useState({
     firstname: "",
     lastname: "",
@@ -129,3 +129,5 @@ export default function AddCustomer({ fetchCustomers }) {
     </div>
   );
 }
+
+export default AddCustomer;

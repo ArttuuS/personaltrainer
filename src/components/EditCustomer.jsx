@@ -7,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default function EditCustomer({ fetchCustomers, data }) {
+function EditCustomer({ fetchCustomers, data }) {
   const [customer, setCustomer] = useState({
     firstname: "",
     lastname: "",
@@ -137,3 +137,5 @@ export default function EditCustomer({ fetchCustomers, data }) {
     </div>
   );
 }
+
+export default EditCustomer;

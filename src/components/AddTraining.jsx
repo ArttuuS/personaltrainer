@@ -11,7 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import MenuItem from "@mui/material/MenuItem";
 import dayjs from "dayjs";
 
-export default function AddTraining({ fetchTrainings }) {
+function AddTraining({ fetchTrainings }) {
   const [training, setTraining] = useState({
     activity: "",
     date: null,
@@ -134,3 +134,5 @@ export default function AddTraining({ fetchTrainings }) {
     </div>
   );
 }
+
+export default AddTraining;
