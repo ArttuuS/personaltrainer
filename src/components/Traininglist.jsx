@@ -3,6 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
 import AddTraining from "./AddTraining";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -71,10 +72,12 @@ function Traininglist() {
       headerName: "Last Name",
     },
     {
+      headerName: "Actions",
       cellRenderer: (params) => (
-        <Button size="small" onClick={() => deleteTraining(params.data.id)}>
-          Delete
-        </Button>
+        <Button
+          startIcon={<DeleteIcon />}
+          onClick={() => deleteTraining(params.data.id)}
+        ></Button>
       ),
       width: 120,
     },

@@ -5,6 +5,7 @@ import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
 import AddTrainingForCustomer from "./AddTrainingForCustomer";
 import CsvExport from "./CsvExport";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -66,11 +67,9 @@ function Customerlist() {
     {
       cellRenderer: (params) => (
         <Button
-          size="small"
+          startIcon={<DeleteIcon />}
           onClick={() => deleteCustomer(params.data.links[0].href)}
-        >
-          Delete
-        </Button>
+        ></Button>
       ),
       width: 120,
     },

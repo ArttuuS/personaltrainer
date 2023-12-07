@@ -9,6 +9,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
+import AddIcon from "@mui/icons-material/Add";
 
 function AddTrainingForCustomer({ customerUrl }) {
   const [training, setTraining] = useState({
@@ -55,9 +56,7 @@ function AddTrainingForCustomer({ customerUrl }) {
 
   return (
     <div>
-      <Button size="small" onClick={handleClickOpen}>
-        Add Training
-      </Button>
+      <Button startIcon={<AddIcon />} onClick={handleClickOpen}></Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Training</DialogTitle>
         <DialogContent>

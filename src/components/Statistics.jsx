@@ -11,7 +11,7 @@ import {
 import _ from "lodash";
 
 function Statistics() {
-  const [trainings, setTrainings] = useState([]); // Declare trainings state
+  const [trainings, setTrainings] = useState([]);
 
   const fetchTrainings = () => {
     fetch("https://traineeapp.azurewebsites.net/gettrainings")
@@ -47,8 +47,18 @@ function Statistics() {
   const renderChart = (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart data={activityData}>
-        <XAxis dataKey="activity" />
-        <YAxis />
+        <XAxis
+          label={{ value: "Activity", position: "left", dx: 70 }}
+          dataKey="activity"
+        />
+        <YAxis
+          label={{
+            value: "Minutes",
+            angle: -90,
+            position: "middle",
+            dx: -15,
+          }}
+        />
         <Tooltip />
         <Legend />
         <Bar dataKey="duration" fill="#8884d8" />
