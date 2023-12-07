@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -9,19 +9,18 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import MenuItem from "@mui/material/MenuItem";
-import moment from "moment";
 import dayjs from "dayjs";
 
 export default function AddTraining({ fetchTrainings }) {
-  const [training, setTraining] = React.useState({
+  const [training, setTraining] = useState({
     activity: "",
     date: null,
     duration: "",
     customer: "",
   });
 
-  const [customers, setCustomers] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [customers, setCustomers] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const fetchCustomers = () => {
     fetch("https://traineeapp.azurewebsites.net/api/customers")
@@ -33,7 +32,7 @@ export default function AddTraining({ fetchTrainings }) {
       .catch((err) => console.error(err));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchCustomers();
   }, []);
 

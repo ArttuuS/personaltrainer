@@ -1,4 +1,3 @@
-// Import necessary dependencies
 import React, { useState, useEffect } from "react";
 import {
   ResponsiveContainer,
@@ -11,7 +10,6 @@ import {
 } from "recharts";
 import _ from "lodash";
 
-// Define the Statistics component
 function Statistics() {
   const [trainings, setTrainings] = useState([]); // Declare trainings state
 
@@ -37,7 +35,6 @@ function Statistics() {
   const [activityData, setActivityData] = useState([]);
 
   useEffect(() => {
-    // Use lodash to group trainings by activity and sum the duration
     const groupedByActivity = _.groupBy(trainings, "activity");
     const activityData = Object.keys(groupedByActivity).map((activity) => ({
       activity,
@@ -47,7 +44,6 @@ function Statistics() {
     setActivityData(activityData);
   }, [trainings]);
 
-  // Define the chart component
   const renderChart = (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart data={activityData}>
@@ -62,7 +58,7 @@ function Statistics() {
 
   return (
     <div>
-      <h2>Activity Distribution Over Time</h2>
+      <h2>Activity Statistics</h2>
       {activityData.length > 0 ? renderChart : <p>No data available</p>}
     </div>
   );
