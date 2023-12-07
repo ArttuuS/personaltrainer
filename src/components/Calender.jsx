@@ -13,12 +13,15 @@ function TrainingCalendar() {
       .then((response) => response.json())
       .then((data) => {
         const formattedTrainings = data.map((training) => {
+          const customerName = training.customer
+            ? `${training.customer.firstname} ${training.customer.lastname}`
+            : "Unknown Customer";
           const startDate = new Date(training.date);
           const endDate = new Date(
             startDate.getTime() + training.duration * 60000
           );
 
-          const title = `${training.activity} / ${training.customer.firstname} ${training.customer.lastname} `;
+          const title = `${training.activity} / ${customerName}`;
 
           return {
             id: training.id,

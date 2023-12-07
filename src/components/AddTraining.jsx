@@ -5,17 +5,17 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DatePicker, TimePicker } from "@mui/x-date-pickers";
+import { DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import MenuItem from "@mui/material/MenuItem";
 import moment from "moment";
+import dayjs from "dayjs";
 
 export default function AddTraining({ fetchTrainings }) {
   const [training, setTraining] = React.useState({
     activity: "",
     date: null,
-    time: null,
     duration: "",
     customer: "",
   });
@@ -46,17 +46,12 @@ export default function AddTraining({ fetchTrainings }) {
   };
 
   const saveTraining = () => {
-    const isoDate = moment(training.date).format("YYYY-MM-DD");
-
-    const isoTimeString = moment(training.time, "hh:mm A").format(
-      "HH:mm:ss.SSS"
-    );
-
-    const isoDateTimeWithTime = `${isoDate}T${isoTimeString}`;
+    const dateTime = dayjs(training.date);
+    const formattedDateTime = dateTime.toISOString();
 
     const formattedTraining = {
       ...training,
-      date: isoDateTimeWithTime,
+      date: formattedDateTime,
     };
 
     fetch("https://traineeapp.azurewebsites.net/api/trainings", {
@@ -94,16 +89,10 @@ export default function AddTraining({ fetchTrainings }) {
             }
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Date"
+            <DateTimePicker
+              label="Date and Time"
               value={training.date}
               onChange={(date) => setTraining({ ...training, date })}
-              textField={(props) => <TextField {...props} fullWidth />}
-            />
-            <TimePicker
-              label="Time"
-              value={training.time}
-              onChange={(time) => setTraining({ ...training, time })}
               textField={(props) => <TextField {...props} fullWidth />}
             />
           </LocalizationProvider>
